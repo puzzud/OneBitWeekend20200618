@@ -1,5 +1,5 @@
 extends Entity
-class_name Hero
+class_name HeroMirror
 
 func _ready():
-	return
+	pass

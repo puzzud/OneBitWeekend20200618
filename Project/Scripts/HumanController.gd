@@ -1,8 +1,5 @@
-extends Node
+extends Controller
 class_name HumanController
-
-var intendedDirection := Vector2.ZERO
-var intendedJump := false
 
 func _ready():
 	pass
