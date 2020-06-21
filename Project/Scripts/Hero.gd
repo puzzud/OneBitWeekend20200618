@@ -2,9 +2,6 @@ extends KinematicBody2D
 
 export (float) var speed := 40.0
 
-export (bool) var isShadow := false
-
-var intendedDirection := Vector2.ZERO
 var direction := Vector2.ZERO
 var velocity := Vector2.ZERO
 
@@ -14,19 +11,14 @@ var jumping := false
 var gravity := Vector2(0.0, 98.0 * 4.0)
 
 func _ready():
-	if isShadow:
-		var material: ShaderMaterial = $AnimatedSprite.get_material()
-		material = material.duplicate(true)
-		material.set_shader_param("invert", isShadow)
-		$AnimatedSprite.set_material(material)
-		
+	return
 
 func _process(delta: float) -> void:
-	intendedDirection.x = Input.get_action_strength("ui_right") - Input.get_action_strength("ui_left")
-	intendedDirection.y = Input.get_action_strength("ui_down") - Input.get_action_strength("ui_up")
+	var intendedDirection := Vector2.ZERO
 	
-	if isShadow:
-		intendedDirection.x *= -1.0
+	var controller = getController()
+	if controller != null:
+		intendedDirection = controller.intendedDirection
 	
 	if intendedDirection.x < 0.0:
 		$AnimatedSprite.animation = "WalkLeft"
@@ -43,7 +35,7 @@ func _process(delta: float) -> void:
 			$AnimatedSprite.playing = false
 			$AnimatedSprite.frame = 2
 		
-		if Input.get_action_strength("ui_accept"):
+		if controller != null and controller.intendedJump:
 			jumping = true
 	
 	if not grounded or jumping:
@@ -65,3 +57,9 @@ func _physics_process(delta: float) -> void:
 	grounded = is_on_floor()
 	if grounded:
 		jumping = false
+
+func getController() -> Node:
+	if has_node("Controller"):
+		return get_node("Controller")
+	
+	return null
