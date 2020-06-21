@@ -105,5 +105,6 @@ material = SubResource( 4 )
 margin_right = 320.0
 margin_bottom = 200.0
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
